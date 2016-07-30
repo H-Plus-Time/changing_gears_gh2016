@@ -1,0 +1,87 @@
+<link rel="import" href="bower_components/polymer/polymer.html">
+<script src="bower_components/leaflet/dist/leaflet.js"></script>
+<link rel="import" href="bower_components/leaflet-map/leaflet-map.html">
+<link rel="stylesheet" href="bower_components/leaflet/dist/leaflet.css">
+<script src="node_modules/chart.js/dist/Chart.js"></script>
+<link rel="import" href="bower_components/iron-flex-layout/iron-flex-layout-classes.html">
+<dom-module id="th-negative-gearing-map">
+    <template>
+        <style include="iron-flex iron-flex-alignment">
+        </style>
+        <leaflet-map id="ng-map" style="height:100%" longitude="145.00" latitude="-37.90" zoom="11"></leaflet-map>
+    </template>
+    <script>
+        Polymer({
+            is: 'th-negative-gearing-map',
+            generateSA4Polygons: function() {
+                fetch('data/ng_data.json')
+                .then(
+                    (resp) => {
+                        return resp.json();    
+                    }
+                )
+                .then(function(zones) {
+                    console.log(zones);
+                    zones.map(function(zone) {
+
+                        this.$$('leaflet-map').map.addLayer(new L.Polygon(zone.coordinate_pairs, {color: 'red', fillColor: 'blue'}));
+                    }.bind(this));
+                }.bind(this))
+            },
+            attached: function() {
+                this.map = L.map('ng-map', { zoomControl: false }).setView([-35.000, 145.00], 13);
+
+                var layer = L.tileLayer('http://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}.png', {
+                    maxZoom: 18,
+                    attribution: 'Map data &copy <a href="http://openstreetmap.org">OpenStreetMap</a> contributors',
+                    useCache: true
+                });
+                layer.setZIndex(9990);
+                layer.addTo(this.map);
+                this.generateSA4Polygons();
+            }
+        })
+    </script>
+</dom-module>
+<dom-module id="th-negative-gearing-scatter">
+    <template>
+        <div style="height:100%">
+            <canvas id="chart" width="400" height="400"></canvas>
+        </div>
+
+    </template>
+    <script>
+        Polymer({
+            is: 'th-negative-gearing-scatter',
+            switchView: function() {
+
+            },
+            attached: function() {
+                fetch('data/random_samples.json')
+                .then( (resp) => {
+                    return resp.json();
+                })
+                .then(function(records) {
+                    console.log(records);
+                    var data = {
+                        datasets: [
+                            {
+                                data: records,
+                                backgroundColor: '#FF6384',
+                                hoverBackgroundColor: '#FF6384'
+                            }
+                        ]
+                    };
+                    var options = {};
+                    console.log(this.$.chart);
+                    this.myBubbleChart = new Chart(this.$.chart,{
+                        type: 'bubble',
+                        data: data
+                    });
+                }.bind(this))
+
+                
+            }
+        })
+    </script>
+</dom-module>

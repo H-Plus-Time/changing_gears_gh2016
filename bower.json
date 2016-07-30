@@ -1,0 +1,28 @@
+{
+  "name": "taxhack",
+  "authors": [
+    "H-Plus-Time <hydrogenplustime@gmail.com>"
+  ],
+  "description": "",
+  "main": "index.html",
+  "license": "GPLv3",
+  "homepage": "https://github.com/H-Plus-Time/taxhack",
+  "private": true,
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "polymer": "^1.6.0",
+    "leaflet": "^0.7.7",
+    "d3": "^3.5.17",
+    "leaflet-map": "^1.2.0",
+    "opencpu.js": "opencpu#*",
+    "paper-tabs": "^1.6.2",
+    "iron-pages": "^1.0.8",
+    "chartjs": "^2.2.0"
+  }
+}
