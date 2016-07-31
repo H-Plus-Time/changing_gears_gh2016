@@ -39,6 +39,16 @@
                 layer.setZIndex(9990);
                 layer.addTo(this.map);
                 this.generateSA4Polygons();
+                fetch('sa4.json')
+                .then( (resp) => {
+                    console.log(resp);
+                    return resp.json();
+                })
+                .then(function(geojson) {
+                    console.log(geojson);
+                    L.geoJson(geojson).addTo(this.map);    
+                }.bind(this))
+                
             }
         })
     </script>
